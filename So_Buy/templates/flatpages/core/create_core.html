@@ -1,0 +1,124 @@
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+<div class="container mt-4">
+
+    {% if not form %}
+    {# Режим выбора типа публикации #}
+    <h2>Выберите тип публикации</h2>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">📰 Новость</h5>
+                    <p class="card-text">Создать короткую новостную публикацию</p>
+                    <a href="{% url 'create_nw' %}" class="btn btn-primary">Создать новость</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">📝 Статья</h5>
+                    <p class="card-text">Создать подробную статью</p>
+                    <a href="{% url 'create_nw' %}" class="btn btn-primary">Создать статью</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% else %}
+    {# Режим создания публикации #}
+    <p><h2>Создать новую: Статью | Новость {{ post_type_display }}</h2><p/>
+    <p>&nbsp;</p>
+
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="post" novalidate>
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+            {% for error in form.non_field_errors %}
+            <strong>{{ error }}</strong><br>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+       <!-- Видимое поле выбора типа публикации -->
+        <div class="mb-3">
+            <label for="{{ form.categoryType.id_for_label }}" class="form-label">Тип публикации:</label>
+            {{ form.categoryType }}
+            {% if form.categoryType.errors %}
+            <div class="text-danger mt-1">
+                {% for error in form.categoryType.errors %}
+                <small class="d-block">• {{ error }}</small>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <div class="form-text">Выберите тип публикации.</div>
+        </div>
+
+        <!-- Поле автора -->
+        <div class="mb-3">
+            <label for="{{ form.author_name.id_for_label }}" class="form-label">Имя автора:</label>
+            {{ form.author_name }}
+            {% if form.author_name.errors %}
+            <div class="text-danger mt-1">
+                {% for error in form.author_name.errors %}
+                <small class="d-block">• {{ error }}</small>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <div class="form-text">Введите имя автора публикации.</div>
+        </div>
+
+        <!-- Поле заголовка -->
+        <div class="mb-3">
+            <label for="{{ form.title.id_for_label }}" class="form-label">Заголовок:</label>
+            {{ form.title }}
+            {% if form.title.errors %}
+            <div class="text-danger mt-1">
+                {% for error in form.title.errors %}
+                <small class="d-block">• {{ error }}</small>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <div class="form-text">Минимум 5 символов, максимум 128. Должен быть уникальным.</div>
+        </div>
+
+        <!-- Поле текста -->
+        <div class="mb-3">
+            <label for="{{ form.text.id_for_label }}" class="form-label">Текст {{ post_type_display|lower }}:</label>
+            {{ form.text }}
+            {% if form.text.errors %}
+            <div class="text-danger mt-1">
+                {% for error in form.text.errors %}
+                <small class="d-block">• {{ error }}</small>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <div class="form-text">Минимум 20 символов. Текст должен быть уникальным.</div>
+        </div>
+
+        <div class="d-grid gap-2 d-md-flex">
+            <button type="submit" class="btn btn-primary me-md-2">
+                Создать {{ post_type_display|lower }}
+            </button>
+        </div>
+    </form>
+    {% endif %}
+
+</div>
+{% endblock %}
