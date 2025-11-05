@@ -42,8 +42,7 @@ class CustomUser(models.Model):
 
     def __str__(self):
         return f'Имя : {self.name.title()}'
-    def __str__(self):
-        return self.phone
+
 
 
 
