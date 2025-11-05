@@ -1,40 +1,50 @@
-from django.contrib.auth.models import AbstractUser
+from encodings.punycode import digits
+
+from django.core.validators import MinLengthValidator, MinValueValidator, MaxLengthValidator
 from django.db import models
 from django.core.exceptions import ValidationError
 
 
 # Create your models here.
-class CustomUser(AbstractUser):
-    groups = models.ManyToManyField(
-        'auth.Group',
-        verbose_name='groups',
-        blank=True,
-        help_text='The groups this user belongs to.',
-        related_name='customuser_set',  # Уникальное имя
-        related_query_name='customuser',
-    )
-    user_permissions = models.ManyToManyField(
-        'auth.Permission',
-        verbose_name='user permissions',
-        blank=True,
-        help_text='Specific permissions for this user.',
-        related_name='customuser_set',  # Уникальное имя
-        related_query_name='customuser',
-    )
-    email = models.EmailField(unique=True, verbose_name="email", error_messages={"unique": "Пользователь с данной электронной почтой уже был зарегистрирован"}, blank=False)
+class CustomUser(models.Model):
+    name = models.CharField(max_length=20)
+    surname = models.CharField(max_length=20)
+    password = models.CharField(max_length=128, validators=[MinLengthValidator(8), MaxLengthValidator(128)])
+    email = models.EmailField(unique=True, verbose_name="email", blank=False)
     phone = models.CharField(max_length=12, unique=True, verbose_name='phone', blank=False)
-    balance = models.DecimalField(max_digits=15, decimal_places=2, default=0.00)
+    balance = models.DecimalField(max_digits=15, decimal_places=2, validators=[MinValueValidator(0)], default=0.00)
 
-    def clean(self):
-        super().clean()
 
-        if self.phone:
-            if not self.phone.startswith('+79') or len(self.phone) != 12:
-                raise ValidationError({'phone': 'Ошибка, введите номер телефона в формате +79ХХХХХХХХХ'})
+    def check_password(self):
+        if len(self.password) < 8:
+            raise ValidationError('Длина пароля не должна быть меньше 8 символов')
+        if len(self.password) > 128:
+            raise ValidationError('Длина пароля не должна быть больше 128 символов')
+
+    def check_phone(self):
+        if len(self.phone) != 12:
+            raise ValidationError('Номер должен состоять из 12 символов')
+        if not self.phone.startswith('+'):
+            raise ValidationError('Номер должен начинаться с +')
+        if not self.phone[1:].isdigit():
+            raise ValidationError('Номер должен состоять из цифр после знака +')
+
+    def check_balance(self):
+        if not self.balance.isdigit():
+            raise ValidationError('Баланс должен быть числом')
 
     def save(self, *args, **kwargs):
-        self.full_clean()
+        self.check_password()
+        self.check_phone()
+        self.check_balance()
         super().save(*args, **kwargs)
+
+
+    def __str__(self):
+        return f'Имя : {self.name.title()}'
+    def __str__(self):
+        return self.phone
+
 
 
 

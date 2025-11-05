@@ -39,11 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'crispy_forms',
-    'rest_framework',
 
-    # Созданные приложения
-    'User'
+    # Написанные приложения
+    'User',
+    'simpleapp',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -85,10 +84,9 @@ WSGI_APPLICATION = 'So_Buy.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'db_new.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
