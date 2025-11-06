@@ -7,8 +7,8 @@ from django.core.exceptions import ValidationError
 
 # Create your models here.
 class CustomUser(models.Model):
-    name = models.CharField(max_length=20)
-    surname = models.CharField(max_length=20)
+    name = models.CharField(max_length=20, null=True)
+    surname = models.CharField(max_length=20, null=True)
     password = models.CharField(max_length=128, validators=[MinLengthValidator(8), MaxLengthValidator(128)])
     email = models.EmailField(unique=True, verbose_name="email", blank=False)
     phone = models.CharField(max_length=12, unique=True, verbose_name='phone', blank=False)
