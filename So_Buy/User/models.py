@@ -29,19 +29,16 @@ class CustomUser(models.Model):
         if not self.phone[1:].isdigit():
             raise ValidationError('Номер должен состоять из цифр после знака +')
 
-    def check_balance(self):
-        if not self.balance.isdigit():
-            raise ValidationError('Баланс должен быть числом')
+
 
     def save(self, *args, **kwargs):
         self.check_password()
         self.check_phone()
-        self.check_balance()
         super().save(*args, **kwargs)
 
 
     def __str__(self):
-        return f'Имя : {self.name.title()}'
+        return f'Имя : {self.name.title()}, Фамилия : {self.surname.title()}'
 
 
 

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ user.name }} {{ user.surname }}</title>
+    <style>
+        .home-button {
+            display: inline-block;
+            background-color: black;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border: 2px solid black;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .home-button:active {
+            background-color: white;
+            color: black;
+        }
+
+        .nav-button {
+            background-color: #555;
+            color: white;
+            padding: 0px 0px;
+            text-decoration: none;
+            border-radius: 40px;
+            transition: background-color 0.3s ease;
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            padding-right: 10px;
+        }
+
+        .datetime-display {
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <nav class="top-nav">
+        <div class="nav-buttons">
+            <a href="/" class="home-button">На главную</a>
+        </div>
+        <div class="datetime-display">
+            <h3 style="margin: 0;">{{ time_now|date:'M d Y' }}</h3>
+        </div>
+    </nav>
+    <h1>Профиль пользователя</h1>
+    <div>
+        <p><strong>Имя:</strong> {{user.name}}</p>
+        <p><strong>Фамилия:</strong> {{user.surname}}</p>
+        <p><strong>Электронная почта:</strong> {{user.email}}</p>
+        <p><strong>Телефон:</strong> {{user.phone}}</p>
+        <p><strong>Денег на счёте:</strong> {{user.balance}} руб.</p>
+    </div>
+</body>
+</html>
