@@ -14,20 +14,6 @@ class Product(models.Model):
     def __str__(self):
         return f'{self.name.title()}: {self.description}'
 
-    def clean(self):
-        if self.quantity < 0:
-            raise ValidationError('Количество товара не может быть меньше 0')
-        if self.price <= 0:
-            raise ValidationError('Цена не может быть меньше или равной 0')
-        if not self.description:
-            raise ValidationError({
-                'description' : 'Заполните описание товара'
-            })
-
-    def save(self, *args, **kwargs):
-        self.full_clean()
-        super().save(*args, **kwargs)
-
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)

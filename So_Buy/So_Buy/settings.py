@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     # Написанные приложения
     'User',
     'simpleapp',
+    'Auth',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
