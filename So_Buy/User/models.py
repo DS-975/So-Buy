@@ -1,4 +1,5 @@
 from encodings.punycode import digits
+from django.contrib.auth.models import AbstractUser
 
 from django.core.validators import MinLengthValidator, MinValueValidator, MaxLengthValidator
 from django.db import models
@@ -6,7 +7,9 @@ from django.core.exceptions import ValidationError
 
 
 # Create your models here.
-class CustomUser(models.Model):
+class CustomUser(AbstractUser):
+
+
     name = models.CharField(max_length=20, null=True)
     surname = models.CharField(max_length=20, null=True)
     password = models.CharField(max_length=128, validators=[MinLengthValidator(8), MaxLengthValidator(128)])
