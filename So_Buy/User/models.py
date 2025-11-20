@@ -8,11 +8,12 @@ from django.core.exceptions import ValidationError
 
 # Create your models here.
 class CustomUser(AbstractUser):
-    name = models.CharField(max_length=20, null=True, blank=True)
-    surname = models.CharField(max_length=20, null=True, blank=True)
+    first_name = None
+    last_name = None
+
     phone = models.CharField(max_length=12, unique=True, verbose_name='phone', blank=True)
     balance = models.DecimalField(max_digits=15, decimal_places=2, validators=[MinValueValidator(0)], default=0.00)
-
+    is_seller = models.BooleanField(default=False, verbose_name='seller')
 
 
     def check_phone(self):
