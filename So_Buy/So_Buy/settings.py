@@ -40,15 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-<<<<<<< HEAD
+
     # Созданные для магазина приложения
     'User',
-=======
-    # Написанные приложения
-    'User',
-    'simpleapp',
     'Auth',
->>>>>>> models
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
